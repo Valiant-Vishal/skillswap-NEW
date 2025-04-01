@@ -13,7 +13,7 @@
     </div>
     <nav class="nav-bar">
         <ul>
-            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('main.index') }}">Home</a></li>
             <li><a href="#">About</a></li>
         </ul>
         <button id="theme-toggle">☾ Dark Mode</button>
@@ -23,7 +23,7 @@
 <main>
     <div class="signup-container">
         <h1>Create an Account</h1>
-        <form method="POST" action="{{ url_for('sign_up') }}">
+        <form method="POST" action="{{ url_for('main.sign_up') }}">
             {{ form.hidden_tag() }}
             
             <div class="form-group">
@@ -62,7 +62,7 @@
 
             <p id="login-line">
                 Already have an account? 
-                <a href="{{ url_for('login') }}">
+                <a href="{{ url_for('main.login') }}">
                     Login
                 </a>
             </p>
