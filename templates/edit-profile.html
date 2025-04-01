@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/edit-profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='assets/favicon.svg') }}" alt="SkillSwap Logo">
+                <span class="site-name">SkillSwap</span>
+            </div>
+        </div>
+        <ul class="menu">
+            <li data-tooltip="Home">
+                <a href="{{ url_for('main.dashboard') }}">
+                    <i class="fa-solid fa-home"></i>
+                    <span class="menu-text">Home</span>
+                </a>
+            </li>
+            <li data-tooltip="Explore">
+                <a href="{{ url_for('main.explore') }}">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span class="menu-text">Explore</span>
+                </a>
+            </li>
+            <li data-tooltip="Messages">
+                <a href="{{ url_for('main.messages') }}">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span class="menu-text">Messages</span>
+                </a>
+            </li>
+            <li data-tooltip="Profile">
+                <a href="{{ url_for('main.profile') }}">
+                    <i class="fa-solid fa-user"></i>
+                    <span class="menu-text">Profile</span>
+                </a>
+            </li>
+            <li class="active" data-tooltip="Settings">
+                <a href="#">
+                    <i class="fa-solid fa-gear"></i>
+                    <span class="menu-text">Settings</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="profile">👤 {{ current_user.name }}</div>
+            <button id="theme-toggle">Toggle Theme</button>
+        </header>
+
+        <section class="content">
+            <h1>Edit Profile</h1>
+
+            <form method="POST" class="card" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                
+                <div class="form-group">
+                    {{ form.name.label }}
+                    {{ form.name(class="form-control") }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.location.label }}
+                    {{ form.location(class="form-control") }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.bio.label }}
+                    {{ form.bio(class="form-control", rows=4) }}
+                </div>
+
+                <div style="display: flex; gap: 20px;">
+                    <div class="form-group" style="flex: 1;">
+                        {{ form.skills_offer.label(style="font-weight: bold;") }}
+                        <div style="display: flex; align-items: center;">
+                            {{ form.skills_offer(class="form-control", placeholder="Add a skill") }}
+                            <button type="button" class="add-skill-btn" onclick="addSkill('skills_offer', 'skills-offer-list')">
+                                +
+                            </button>
+                        </div>
+                        <div id="skills-offer-list" class="skills-list"></div>
+                    </div>
+
+                    <div class="form-group" style="flex: 1;">
+                        {{ form.skills_learn.label(style="font-weight: bold;") }}
+                        <div style="display: flex; align-items: center;">
+                            {{ form.skills_learn(class="form-control", placeholder="Add a skill") }}
+                            <button type="button" class="add-skill-btn" onclick="addSkill('skills_learn', 'skills-learn-list')">
+                                +
+                            </button>
+                        </div>
+                        <div id="skills-learn-list" class="skills-list"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Profile Picture</label>
+                    <div class="profile-img-upload">
+                        <div class="profile-img-preview">
+                            {% if current_user.profile_pic %}
+                            <img src="{{ url_for('static', filename='uploads/' + current_user.profile_pic) }}" alt="Profile Picture">
+                            {% else %}
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="40" r="20" fill="var(--primary)" />
+                                <circle cx="50" cy="100" r="40" fill="var(--primary)" />
+                            </svg>
+                            {% endif %}
+                        </div>
+                        <input type="file" id="profile-pic" name="profile_pic" class="form-control" accept="image/*">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    {{ form.submit(class="btn btn-primary") }}
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='{{ url_for('profile') }}';">Cancel</button>
+                </div>
+            </form>
+        </section>
+    </main>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function addSkill(inputId, listId) {
+    const input = document.getElementById(inputId);
+    const list = document.getElementById(listId);
+
+    if (input.value.trim()) {
+        const skillValue = input.value.trim().toLowerCase();
+        const existingSkills = Array.from(list.children).map(skill => 
+            skill.querySelector('span').textContent.toLowerCase()
+        );
+
+        if (!existingSkills.includes(skillValue)) {
+            const skillContainer = document.createElement('div');
+            skillContainer.style.display = 'flex';
+            skillContainer.style.alignItems = 'center';
+            skillContainer.style.padding = '5px 10px';
+            skillContainer.style.border = '1px solid #007bff';
+            skillContainer.style.borderRadius = '4px';
+            skillContainer.style.backgroundColor = '#e7f3ff';
+            skillContainer.style.color = '#007bff';
+
+            const skillText = document.createElement('span');
+            skillText.textContent = input.value.trim();
+            skillText.style.marginRight = '10px';
+
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'x';
+            removeBtn.style.padding = '2px 5px';
+            removeBtn.style.cursor = 'pointer';
+            removeBtn.style.border = 'none';
+            removeBtn.style.backgroundColor = '#ff4d4d';
+            removeBtn.style.color = 'white';
+            removeBtn.style.borderRadius = '4px';
+            removeBtn.addEventListener('click', () => skillContainer.remove());
+
+            skillContainer.appendChild(skillText);
+            skillContainer.appendChild(removeBtn);
+            list.appendChild(skillContainer);
+            input.value = '';
+        } else {
+            alert('This skill is already added.');
+        }
+    }
+}
+</script>
+{% endblock %}

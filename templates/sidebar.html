@@ -1,0 +1,40 @@
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <div class="logo" id="sidebar-toggle">
+            <img src="{{ url_for('static', filename='assets/favicon.svg') }}" alt="SkillSwap Logo">
+            <span class="site-name">SkillSwap</span>
+        </div>
+    </div>
+    <ul class="nav-menu">
+        <li class="nav-item active">
+            <a href="{{ url_for('main.dashboard') }}" class="nav-link">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ url_for('main.explore') }}" class="nav-link">
+                <i class="fas fa-search"></i>
+                <span>Explore</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ url_for('main.messages') }}" class="nav-link">
+                <i class="fas fa-envelope"></i>
+                <span>Messages</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="fas fa-bookmark"></i>
+                <span>Saved</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </li>
+    </ul>
+</aside>

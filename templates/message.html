@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/message.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo" id="sidebar-toggle">
+                <img src="{{ url_for('static', filename='assets/favicon.svg') }}" alt="SkillSwap Logo">
+                <span class="site-name">SkillSwap</span>
+            </div>
+        </div>
+        <ul class="menu">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('main.dashboard') }}" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('main.explore') }}" class="nav-link">
+                        <i class="fas fa-search"></i>
+                        <span>Explore</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="{{ url_for('main.messages') }}" class="nav-link">
+                        <i class="fas fa-envelope"></i>
+                        <span>Messages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-bookmark"></i>
+                        <span>Saved</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <a href="{{ url_for('main.profile') }}">
+                <div class="profile">👤 {{ current_user.name }}</div>
+            </a>
+            <button id="theme-toggle">Toggle Theme</button>
+        </header>
+        
+        <section class="chat-container">
+            <aside class="chat-sidebar">
+                <div class="chat-search">
+                    <input type="text" placeholder="Search conversations...">
+                </div>
+                <ul class="chat-list">
+                    {% for conversation in conversations %}
+                    <li class="chat-item {% if loop.first %}active{% endif %}">
+                        <span class="username">{{ conversation.receiver.name if conversation.sender_id == current_user.id else conversation.sender.name }}</span>
+                        <p class="last-message">{{ conversation.content }}</p>
+                        <span class="timestamp">{{ conversation.created_at|time_ago }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </aside>
+            
+            <div class="chat-window">
+                <header class="chat-header">
+                    <h2>{% if conversations %}{{ conversations[0].receiver.name if conversations[0].sender_id == current_user.id else conversations[0].sender.name }}{% else %}No conversations{% endif %}</h2>
+                    <span class="status">Online</span>
+                </header>
+                <div class="messages">
+                    {% if conversations %}
+                    <div class="message received">
+                        <span class="sender">{{ conversations[0].receiver.name if conversations[0].sender_id == current_user.id else conversations[0].sender.name }}</span>
+                        <p class="text">{{ conversations[0].content }}</p>
+                        <span class="time">{{ conversations[0].created_at|time_ago }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="input-area">
+                    <input type="text" placeholder="Type a message..." class="message-input">
+                    <button class="send-button"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/message.js') }}"></script>
+{% endblock %}

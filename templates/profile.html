@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo" id="sidebar-toggle">
+                <img src="{{ url_for('static', filename='assets/favicon.svg') }}" alt="SkillSwap Logo">
+                <span class="site-name">SkillSwap</span>
+            </div>
+        </div>
+        <ul class="menu">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('main.dashboard') }}" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('main.explore') }}" class="nav-link">
+                        <i class="fas fa-search"></i>
+                        <span>Explore</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('main.messages') }}" class="nav-link">
+                        <i class="fas fa-envelope"></i>
+                        <span>Messages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-bookmark"></i>
+                        <span>Saved</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <a href="{{ url_for('profile') }}">
+                <div class="profile">👤 {{ user.name }}</div>
+            </a>
+            <button id="theme-toggle">Toggle Theme</button>
+        </header>
+        
+        <section class="content">
+            <div class="profile-container">
+                <img src="{{ url_for('static', filename='assets/profile-pic.png') }}" alt="User Profile" class="profile-pic">
+                <div class="profile-details">
+                    <h1 class="profile-name">{{ user.name }}</h1>
+                    <p class="profile-location">{{ user.location }}</p>
+                    <p class="profile-stats">112 Followers • 97 Following</p>
+                </div>
+                <div class="profile-actions">
+                    <button class="btn follow-btn">Follow</button>
+                    <button class="btn message-btn">Message</button>
+                    <button class="btn edit-profile-btn"><a href="{{ url_for('edit_profile') }}">Edit Profile</a></button>
+                </div>
+            </div>
+
+            <section class="bio-data">
+                <div>About me:</div>
+                <div>
+                    {{ user.bio or "This user hasn't written a bio yet." }}
+                </div> 
+            </section>
+
+            <section class="skills-container">
+                <div class="skill-column">
+                    <h2>Skills You Know</h2>
+                    <ul class="skill-list" id="skills-known">
+                        {% for skill in skills_known %}
+                        <li>{{ skill.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="skill-column">
+                    <h2>Skills to Learn</h2>
+                    <ul class="skill-list" id="skills-learning">
+                        {% for skill in skills_learning %}
+                        <li>{{ skill.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="skill-column">
+                    <h2>Recently Learned</h2>
+                    <ul class="skill-list" id="skills-recent">
+                        <li>Git & GitLab</li>
+                        <li>Linux Basics</li>
+                        <li>Data Visualization</li>
+                    </ul>
+                </div>
+            </section>
+        </section>
+    </main>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+{% endblock %}

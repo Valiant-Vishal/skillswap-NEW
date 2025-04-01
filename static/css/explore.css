@@ -1,0 +1,58 @@
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.welcome-section {
+    margin-bottom: var(--space-xl);
+}
+
+.welcome-section h2 {
+    font-size: 1.75rem;
+    margin-bottom: var(--space-sm);
+}
+
+.search-bar {
+    display: flex;
+    margin-bottom: var(--space-xl);
+    gap: var(--space-sm);
+}
+
+.search-bar input {
+    flex: 1;
+    padding: var(--space-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+.search-bar button {
+    padding: var(--space-md) var(--space-lg);
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+}
+
+.skills-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-md);
+}
+
+.skill-card {
+    background-color: var(--bg-primary);
+    padding: var(--space-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    transition: transform 0.2s;
+}
+
+.skill-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.skill-card h3 {
+    margin-bottom: var(--space-sm);
+    color: var(--primary);
+}

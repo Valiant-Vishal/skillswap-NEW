@@ -1,0 +1,119 @@
+.profile-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xl);
+    margin-bottom: var(--space-xl);
+    background-color: var(--bg-primary);
+    padding: var(--space-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary);
+}
+
+.profile-details {
+    flex: 1;
+}
+
+.profile-name {
+    font-size: 2rem;
+    margin-bottom: var(--space-sm);
+}
+
+.profile-location {
+    color: var(--text-muted);
+    margin-bottom: var(--space-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.profile-stats {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.profile-actions {
+    display: flex;
+    gap: var(--space-md);
+}
+
+.follow-btn, .message-btn, .edit-profile-btn {
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.follow-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+}
+
+.message-btn {
+    background-color: var(--bg-primary);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+}
+
+.edit-profile-btn a {
+    color: white;
+}
+
+.edit-profile-btn {
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+}
+
+.bio-data {
+    background-color: var(--bg-primary);
+    padding: var(--space-lg);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--space-xl);
+    box-shadow: var(--shadow);
+}
+
+.bio-data div:first-child {
+    font-weight: 600;
+    margin-bottom: var(--space-sm);
+}
+
+.skills-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-lg);
+}
+
+.skill-column {
+    background-color: var(--bg-primary);
+    padding: var(--space-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.skill-column h2 {
+    margin-bottom: var(--space-lg);
+    font-size: 1.25rem;
+    color: var(--primary);
+}
+
+.skill-list {
+    list-style: none;
+}
+
+.skill-list li {
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.skill-list li:last-child {
+    border-bottom: none;
+}

@@ -1,0 +1,97 @@
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex: 1;
+    padding: var(--space-lg);
+    background-color: var(--bg-secondary);
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md);
+    background-color: var(--bg-primary);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--space-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-weight: 500;
+}
+
+.welcome-section {
+    margin-bottom: var(--space-xl);
+}
+
+.welcome-section h2 {
+    font-size: 1.75rem;
+    margin-bottom: var(--space-sm);
+}
+
+.quick-actions {
+    display: flex;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+    flex-wrap: wrap;
+}
+
+.quick-actions button {
+    padding: var(--space-md) var(--space-lg);
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    transition: transform 0.2s;
+}
+
+.quick-actions button:hover {
+    transform: translateY(-2px);
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+}
+
+@media (min-width: 992px) {
+    .content-grid {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+.skills-recommendation, .recent-activity {
+    background-color: var(--bg-primary);
+    padding: var(--space-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.skill-card {
+    background-color: var(--bg-secondary);
+    padding: var(--space-md);
+    margin-bottom: var(--space-md);
+    border-radius: var(--border-radius);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.skill-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.recent-activity p {
+    margin-bottom: var(--space-sm);
+    padding: var(--space-sm);
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+}

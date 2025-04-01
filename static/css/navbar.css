@@ -1,0 +1,75 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md) var(--space-lg);
+    background-color: var(--bg-primary);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.nav-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+}
+
+.nav-bar ul {
+    display: flex;
+    list-style: none;
+    gap: var(--space-lg);
+}
+
+.nav-bar a {
+    color: var(--text-dark);
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav-bar a:hover {
+    color: var(--primary);
+}
+
+#theme-toggle {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.cta-button {
+    display: inline-block;
+    padding: var(--space-sm) var(--space-lg);
+    background-color: var(--primary);
+    color: white;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    transition: transform 0.2s;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    color: white;
+}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/explore.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo" id="sidebar-toggle">
+                <img src="{{ url_for('static', filename='assets/favicon.svg') }}" alt="SkillSwap Logo">
+                <span class="site-name">SkillSwap</span>
+            </div>
+        </div>
+        <ul class="menu">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('main.dashboard') }}" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="{{ url_for('main.explore') }}" class="nav-link">
+                        <i class="fas fa-search"></i>
+                        <span>Explore</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('main.messages') }}" class="nav-link">
+                        <i class="fas fa-envelope"></i>
+                        <span>Messages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-bookmark"></i>
+                        <span>Saved</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <a href="{{ url_for('main.profile') }}">
+                <div class="profile">👤 {{ current_user.name }}</div>
+            </a>
+            <button id="theme-toggle">Toggle Theme</button>
+        </header>
+        
+        <section class="content">
+            <div class="welcome-section">
+                <h2>Explore Skills 🔍</h2>
+                <p>Discover new skills and opportunities to learn!</p>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Search for skills or mentors...">
+                <button>Search</button>
+            </div>
+
+            <div class="skills-list">
+                <h3>Available Skills</h3>
+                {% for skill in skills %}
+                <div class="skill-card">
+                    <h3>{{ skill.name }}</h3>
+                    <p>{{ skill.category|capitalize }} - {{ skill.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/explore.js') }}"></script>
+{% endblock %}
