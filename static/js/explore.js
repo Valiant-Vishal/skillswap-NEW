@@ -46,4 +46,51 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Request skill swap for:', skillId);
         });
     });
+
+    // Handle radio buttons
+    const radioButtons = document.querySelectorAll('input[type="radio"][name="search_type"]');
+    
+    // Add custom styling for checked radio buttons
+    radioButtons.forEach(radio => {
+        // Check initial state
+        updateRadioStyle(radio);
+        
+        // Update on change
+        radio.addEventListener('change', function() {
+            radioButtons.forEach(updateRadioStyle);
+        });
+    });
+    
+    function updateRadioStyle(radio) {
+        if (radio.checked) {
+            radio.style.backgroundColor = 'transparent';
+            // Create or update after element
+            setTimeout(() => {
+                if (!radio.nextElementSibling.classList.contains('radio-dot')) {
+                    const dot = document.createElement('span');
+                    dot.className = 'radio-dot';
+                    dot.style.cssText = 'position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 8px; height: 8px; border-radius: 50%; background-color: #fff;';
+                    radio.parentNode.insertBefore(dot, radio.nextSibling);
+                }
+            }, 0);
+            
+            // Highlight the text
+            if (radio.nextElementSibling.tagName === 'SPAN') {
+                radio.nextElementSibling.style.color = 'var(--primary)';
+                radio.nextElementSibling.style.fontWeight = '500';
+            }
+        } else {
+            // Remove the dot if exists
+            const nextElem = radio.nextElementSibling;
+            if (nextElem && nextElem.classList.contains('radio-dot')) {
+                radio.parentNode.removeChild(nextElem);
+            }
+            
+            // Reset text styling
+            if (radio.nextElementSibling && radio.nextElementSibling.tagName === 'SPAN') {
+                radio.nextElementSibling.style.color = '';
+                radio.nextElementSibling.style.fontWeight = '';
+            }
+        }
+    }
 });

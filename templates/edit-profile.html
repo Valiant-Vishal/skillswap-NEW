@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/edit-profile.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
@@ -10,7 +11,7 @@
 <div class="dashboard-container">
     <aside class="sidebar">
         <div class="sidebar-header">
-            <div class="logo">
+            <div class="logo" id="sidebar-toggle">
                 <img src="{{ url_for('static', filename='assets/favicon.svg') }}" alt="SkillSwap Logo">
                 <span class="site-name">SkillSwap</span>
             </div>
@@ -34,6 +35,12 @@
                     <span class="menu-text">Messages</span>
                 </a>
             </li>
+            <li data-tooltip="Connections">
+                <a href="{{ url_for('main.connections') }}">
+                    <i class="fa-solid fa-link"></i>
+                    <span class="menu-text">Connections</span>
+                </a>
+            </li>
             <li data-tooltip="Profile">
                 <a href="{{ url_for('main.profile') }}">
                     <i class="fa-solid fa-user"></i>
@@ -46,54 +53,66 @@
                     <span class="menu-text">Settings</span>
                 </a>
             </li>
+            <li data-tooltip="Logout">
+                <a href="{{ url_for('main.logout') }}">
+                    <i class="fa-solid fa-sign-out-alt"></i>
+                    <span class="menu-text">Logout</span>
+                </a>
+            </li>
         </ul>
     </aside>
 
     <main class="main-content">
         <header class="topbar">
-            <div class="profile">👤 {{ current_user.name }}</div>
-            <button id="theme-toggle">Toggle Theme</button>
+            <a href="{{ url_for('main.profile') }}">
+                <div class="profile">👤 {{ current_user.name }}</div>
+            </a>
+            <div class="topbar-actions">
+                <button id="theme-toggle" class="theme-toggle-btn">🌘 Dark Mode</button>
+            </div>
         </header>
 
         <section class="content">
             <h1>Edit Profile</h1>
 
-            <form method="POST" class="card" enctype="multipart/form-data">
+            <form method="POST" class="card" enctype="multipart/form-data" 
+                  data-known-skills="{{ current_user.skills.filter_by(category='known').all()|map(attribute='name')|list|tojson }}" 
+                  data-learning-skills="{{ current_user.skills.filter_by(category='learning').all()|map(attribute='name')|list|tojson }}">
                 {{ form.hidden_tag() }}
                 
                 <div class="form-group">
                     {{ form.name.label }}
-                    {{ form.name(class="form-control") }}
+                    {{ form.name(class="form-control", placeholder="Full Name") }}
                 </div>
 
                 <div class="form-group">
                     {{ form.location.label }}
-                    {{ form.location(class="form-control") }}
+                    {{ form.location(class="form-control", placeholder="Your location") }}
                 </div>
 
                 <div class="form-group">
                     {{ form.bio.label }}
-                    {{ form.bio(class="form-control", rows=4) }}
+                    {{ form.bio(class="form-control", rows=4, placeholder="A short bio about yourself...") }}
                 </div>
 
-                <div style="display: flex; gap: 20px;">
-                    <div class="form-group" style="flex: 1;">
-                        {{ form.skills_offer.label(style="font-weight: bold;") }}
-                        <div style="display: flex; align-items: center;">
+                <div class="skills-container">
+                    <div class="form-group skills-column">
+                        {{ form.skills_offer.label(class="skills-label") }}
+                        <div class="skill-input-group">
                             {{ form.skills_offer(class="form-control", placeholder="Add a skill") }}
                             <button type="button" class="add-skill-btn" onclick="addSkill('skills_offer', 'skills-offer-list')">
-                                +
+                                <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
                         <div id="skills-offer-list" class="skills-list"></div>
                     </div>
 
-                    <div class="form-group" style="flex: 1;">
-                        {{ form.skills_learn.label(style="font-weight: bold;") }}
-                        <div style="display: flex; align-items: center;">
+                    <div class="form-group skills-column">
+                        {{ form.skills_learn.label(class="skills-label") }}
+                        <div class="skill-input-group">
                             {{ form.skills_learn(class="form-control", placeholder="Add a skill") }}
                             <button type="button" class="add-skill-btn" onclick="addSkill('skills_learn', 'skills-learn-list')">
-                                +
+                                <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
                         <div id="skills-learn-list" class="skills-list"></div>
@@ -103,23 +122,26 @@
                 <div class="form-group">
                     <label>Profile Picture</label>
                     <div class="profile-img-upload">
-                        <div class="profile-img-preview">
+                        <div class="profile-img-preview" id="profile-preview">
                             {% if current_user.profile_pic %}
                             <img src="{{ url_for('static', filename='uploads/' + current_user.profile_pic) }}" alt="Profile Picture">
                             {% else %}
                             <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="50" cy="40" r="20" fill="var(--primary)" />
-                                <circle cx="50" cy="100" r="40" fill="var(--primary)" />
+                                <circle cx="50" cy="40" r="20" />
+                                <circle cx="50" cy="100" r="40" />
                             </svg>
                             {% endif %}
                         </div>
-                        <input type="file" id="profile-pic" name="profile_pic" class="form-control" accept="image/*">
+                        <div class="upload-controls">
+                            <input type="file" id="profile-pic" name="profile_pic" class="form-control" accept="image/*" onchange="previewImage(this)">
+                            <p class="upload-hint">JPG or PNG, max 2MB</p>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-actions">
                     {{ form.submit(class="btn btn-primary") }}
-                    <button type="button" class="btn btn-secondary" onclick="window.location.href='{{ url_for('main.profile') }}';">Cancel</button>
+                    <a href="{{ url_for('main.profile') }}" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </section>
@@ -128,48 +150,93 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load existing skills
+    const form = document.querySelector('form');
+    try {
+        const knownSkills = JSON.parse(form.getAttribute('data-known-skills') || '[]');
+        const learningSkills = JSON.parse(form.getAttribute('data-learning-skills') || '[]');
+        
+        knownSkills.forEach(skill => addSkillTag(skill, 'skills-offer-list'));
+        learningSkills.forEach(skill => addSkillTag(skill, 'skills-learn-list'));
+    } catch (e) {
+        console.error('Error loading skills:', e);
+    }
+    
+    // Handle form submission
+    form.addEventListener('submit', function(e) {
+        // Don't prevent default form submission to ensure proper redirection
+        
+        // Get all skills from the lists
+        const offerSkills = Array.from(document.querySelectorAll('#skills-offer-list .skill-tag span'))
+            .map(span => span.textContent);
+        const learnSkills = Array.from(document.querySelectorAll('#skills-learn-list .skill-tag span'))
+            .map(span => span.textContent);
+        
+        // Update the hidden inputs with the skills
+        document.getElementById('skills_offer').value = offerSkills.join(',');
+        document.getElementById('skills_learn').value = learnSkills.join(',');
+    });
+});
+
 function addSkill(inputId, listId) {
     const input = document.getElementById(inputId);
-    const list = document.getElementById(listId);
-
-    if (input.value.trim()) {
-        const skillValue = input.value.trim().toLowerCase();
-        const existingSkills = Array.from(list.children).map(skill => 
-            skill.querySelector('span').textContent.toLowerCase()
-        );
-
-        if (!existingSkills.includes(skillValue)) {
-            const skillContainer = document.createElement('div');
-            skillContainer.style.display = 'flex';
-            skillContainer.style.alignItems = 'center';
-            skillContainer.style.padding = '5px 10px';
-            skillContainer.style.border = '1px solid #007bff';
-            skillContainer.style.borderRadius = '4px';
-            skillContainer.style.backgroundColor = '#e7f3ff';
-            skillContainer.style.color = '#007bff';
-
-            const skillText = document.createElement('span');
-            skillText.textContent = input.value.trim();
-            skillText.style.marginRight = '10px';
-
-            const removeBtn = document.createElement('button');
-            removeBtn.textContent = 'x';
-            removeBtn.style.padding = '2px 5px';
-            removeBtn.style.cursor = 'pointer';
-            removeBtn.style.border = 'none';
-            removeBtn.style.backgroundColor = '#ff4d4d';
-            removeBtn.style.color = 'white';
-            removeBtn.style.borderRadius = '4px';
-            removeBtn.addEventListener('click', () => skillContainer.remove());
-
-            skillContainer.appendChild(skillText);
-            skillContainer.appendChild(removeBtn);
-            list.appendChild(skillContainer);
+    const value = input.value.trim();
+    
+    if (value) {
+        const existingSkills = Array.from(document.querySelectorAll(`#${listId} .skill-tag span`))
+            .map(span => span.textContent.toLowerCase());
+        
+        if (!existingSkills.includes(value.toLowerCase())) {
+            addSkillTag(value, listId);
             input.value = '';
+            // Set focus back to the input field
+            input.focus();
         } else {
             alert('This skill is already added.');
         }
+    }
+}
+
+function addSkillTag(value, listId) {
+    const list = document.getElementById(listId);
+    const skillTag = document.createElement('div');
+    skillTag.className = 'skill-tag';
+
+    const skillText = document.createElement('span');
+    skillText.textContent = value;
+
+    const removeBtn = document.createElement('button');
+    removeBtn.innerHTML = '&times;';
+    removeBtn.addEventListener('click', function() {
+        skillTag.remove();
+    });
+
+    skillTag.appendChild(skillText);
+    skillTag.appendChild(removeBtn);
+    list.appendChild(skillTag);
+}
+
+function previewImage(input) {
+    const preview = document.getElementById('profile-preview');
+    
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            // Remove any existing content
+            preview.innerHTML = '';
+            
+            // Create and add the image
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.alt = 'Profile Picture Preview';
+            preview.appendChild(img);
+        };
+        
+        reader.readAsDataURL(input.files[0]);
     }
 }
 </script>

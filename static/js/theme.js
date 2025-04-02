@@ -9,10 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Apply the current theme
     if (currentTheme === 'dark') {
         document.body.setAttribute('data-theme', 'dark');
+        document.body.classList.add('dark-mode');
         if (themeToggle) themeToggle.textContent = '☀️ Light Mode';
     } else {
         document.body.removeAttribute('data-theme');
-        if (themeToggle) themeToggle.textContent = '☾ Dark Mode';
+        document.body.classList.remove('dark-mode');
+        if (themeToggle) themeToggle.textContent = '🌘 Dark Mode';
     }
     
     // Toggle theme when button is clicked
@@ -21,10 +23,12 @@ document.addEventListener('DOMContentLoaded', function() {
             let theme;
             if (document.body.getAttribute('data-theme') === 'dark') {
                 document.body.removeAttribute('data-theme');
-                themeToggle.textContent = '☾ Dark Mode';
+                document.body.classList.remove('dark-mode');
+                themeToggle.textContent = '🌘 Dark Mode';
                 theme = 'light';
             } else {
                 document.body.setAttribute('data-theme', 'dark');
+                document.body.classList.add('dark-mode');
                 themeToggle.textContent = '☀️ Light Mode';
                 theme = 'dark';
             }

@@ -14,9 +14,17 @@
     <nav class="nav-bar">
         <ul>
             <li><a href="#">About</a></li>
+            {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('main.logout') }}">Logout</a></li>
+            {% else %}
             <li><a href="{{ url_for('main.login') }}">Login</a></li>
+            {% endif %}
         </ul>
-        <button id="theme-toggle">☾ Dark Mode</button>
+        <button id="theme-toggle" class="theme-toggle-btn">🌘 Dark Mode</button>
+        <button class="mobile-menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
     </nav>
 </header>
 
@@ -29,17 +37,17 @@
     
     <section class="features">
         <div class="feature-card">
-            <i class="fas fa-exchange-alt"></i>
+            <i class="fa-solid fa-arrows-rotate"></i>
             <h3>Skill Exchange</h3>
             <p>Trade your expertise with others in your community</p>
         </div>
         <div class="feature-card">
-            <i class="fas fa-users"></i>
+            <i class="fa-solid fa-users"></i>
             <h3>Community Learning</h3>
             <p>Join groups and learn together</p>
         </div>
         <div class="feature-card">
-            <i class="fas fa-graduation-cap"></i>
+            <i class="fa-solid fa-graduation-cap"></i>
             <h3>Mentorship</h3>
             <p>Find mentors or become one</p>
         </div>
@@ -47,6 +55,15 @@
 </main>
 
 <footer>
-    <p>SkillSwap is a Free and Open Source project. Contribute on <a href="#" style="color: #3498db;">GitLab</a>.</p>
+    <p>SkillSwap is a Free and Open Source project. Contribute on <a href="#">GitLab</a>.</p>
 </footer>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Mobile menu toggle
+    document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+        document.querySelector('.nav-bar').classList.toggle('open');
+    });
+</script>
 {% endblock %}

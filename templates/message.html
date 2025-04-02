@@ -17,38 +17,48 @@
             </div>
         </div>
         <ul class="menu">
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="{{ url_for('main.dashboard') }}" class="nav-link">
-                        <i class="fas fa-home"></i>
-                        <span>Home</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url_for('main.explore') }}" class="nav-link">
-                        <i class="fas fa-search"></i>
-                        <span>Explore</span>
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a href="{{ url_for('main.messages') }}" class="nav-link">
-                        <i class="fas fa-envelope"></i>
-                        <span>Messages</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-bookmark"></i>
-                        <span>Saved</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </a>
-                </li>
-            </ul>
+            <li data-tooltip="Home">
+                <a href="{{ url_for('main.dashboard') }}">
+                    <i class="fa-solid fa-home"></i>
+                    <span class="menu-text">Home</span>
+                </a>
+            </li>
+            <li data-tooltip="Explore">
+                <a href="{{ url_for('main.explore') }}">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span class="menu-text">Explore</span>
+                </a>
+            </li>
+            <li class="active" data-tooltip="Messages">
+                <a href="{{ url_for('main.messages') }}">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span class="menu-text">Messages</span>
+                </a>
+            </li>
+            <li data-tooltip="Connections">
+                <a href="{{ url_for('main.connections') }}">
+                    <i class="fa-solid fa-link"></i>
+                    <span class="menu-text">Connections</span>
+                </a>
+            </li>
+            <li data-tooltip="Saved">
+                <a href="#">
+                    <i class="fa-solid fa-bookmark"></i>
+                    <span class="menu-text">Saved</span>
+                </a>
+            </li>
+            <li data-tooltip="Settings">
+                <a href="#">
+                    <i class="fa-solid fa-gear"></i>
+                    <span class="menu-text">Settings</span>
+                </a>
+            </li>
+            <li data-tooltip="Logout">
+                <a href="{{ url_for('main.logout') }}">
+                    <i class="fa-solid fa-sign-out-alt"></i>
+                    <span class="menu-text">Logout</span>
+                </a>
+            </li>
         </ul>
     </aside>
 
@@ -57,7 +67,9 @@
             <a href="{{ url_for('main.profile') }}">
                 <div class="profile">👤 {{ current_user.name }}</div>
             </a>
-            <button id="theme-toggle">Toggle Theme</button>
+            <div class="topbar-actions">
+                <button id="theme-toggle" class="theme-toggle-btn">🌘 Dark Mode</button>
+            </div>
         </header>
         
         <section class="chat-container">

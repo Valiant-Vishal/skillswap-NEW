@@ -17,38 +17,48 @@
             </div>
         </div>
         <ul class="menu">
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="{{ url_for('main.dashboard') }}" class="nav-link">
-                        <i class="fas fa-home"></i>
-                        <span>Home</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url_for('main.explore') }}" class="nav-link">
-                        <i class="fas fa-search"></i>
-                        <span>Explore</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url_for('main.messages') }}" class="nav-link">
-                        <i class="fas fa-envelope"></i>
-                        <span>Messages</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-bookmark"></i>
-                        <span>Saved</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </a>
-                </li>
-            </ul>
+            <li data-tooltip="Home">
+                <a href="{{ url_for('main.dashboard') }}">
+                    <i class="fa-solid fa-home"></i>
+                    <span class="menu-text">Home</span>
+                </a>
+            </li>
+            <li data-tooltip="Explore">
+                <a href="{{ url_for('main.explore') }}">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span class="menu-text">Explore</span>
+                </a>
+            </li>
+            <li data-tooltip="Messages">
+                <a href="{{ url_for('main.messages') }}">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span class="menu-text">Messages</span>
+                </a>
+            </li>
+            <li data-tooltip="Connections">
+                <a href="{{ url_for('main.connections') }}">
+                    <i class="fa-solid fa-link"></i>
+                    <span class="menu-text">Connections</span>
+                </a>
+            </li>
+            <li data-tooltip="Saved">
+                <a href="#">
+                    <i class="fa-solid fa-bookmark"></i>
+                    <span class="menu-text">Saved</span>
+                </a>
+            </li>
+            <li data-tooltip="Settings">
+                <a href="#">
+                    <i class="fa-solid fa-gear"></i>
+                    <span class="menu-text">Settings</span>
+                </a>
+            </li>
+            <li data-tooltip="Logout">
+                <a href="{{ url_for('main.logout') }}">
+                    <i class="fa-solid fa-sign-out-alt"></i>
+                    <span class="menu-text">Logout</span>
+                </a>
+            </li>
         </ul>
     </aside>
 
@@ -57,21 +67,27 @@
             <a href="{{ url_for('main.profile') }}">
                 <div class="profile">👤 {{ user.name }}</div>
             </a>
-            <button id="theme-toggle">Toggle Theme</button>
+            <div class="topbar-actions">
+                <button id="theme-toggle" class="theme-toggle-btn">🌘 Dark Mode</button>
+            </div>
         </header>
         
         <section class="content">
             <div class="profile-container">
-                <img src="{{ url_for('static', filename='assets/profile-pic.png') }}" alt="User Profile" class="profile-pic">
+                {% if user.profile_pic %}
+                <img src="{{ url_for('static', filename='uploads/' + user.profile_pic) }}" alt="User Profile" class="profile-pic">
+                {% else %}
+                <img src="{{ url_for('static', filename='assets/default-profile.png') }}" alt="User Profile" class="profile-pic">
+                {% endif %}
                 <div class="profile-details">
                     <h1 class="profile-name">{{ user.name }}</h1>
-                    <p class="profile-location">{{ user.location }}</p>
+                    <p class="profile-location">📍 {{ user.location }}</p>
                     <p class="profile-stats">112 Followers • 97 Following</p>
                 </div>
                 <div class="profile-actions">
-                    <button class="btn follow-btn">Follow</button>
-                    <button class="btn message-btn">Message</button>
-                    <button class="btn edit-profile-btn"><a href="{{ url_for('main.edit_profile') }}">Edit Profile</a></button>
+                    <button class="follow-btn">Follow</button>
+                    <button class="message-btn">Message</button>
+                    <button class="edit-profile-btn"><a href="{{ url_for('main.edit_profile') }}">Edit Profile</a></button>
                 </div>
             </div>
 
@@ -114,5 +130,6 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
 <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
 {% endblock %}

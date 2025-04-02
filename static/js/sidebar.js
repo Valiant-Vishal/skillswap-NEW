@@ -4,20 +4,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (sidebarToggle && sidebar) {
         sidebarToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('collapsed');
+            sidebar.classList.toggle('expanded');
             
             // Save state in localStorage
-            if (sidebar.classList.contains('collapsed')) {
-                localStorage.setItem('sidebarState', 'collapsed');
-            } else {
+            if (sidebar.classList.contains('expanded')) {
                 localStorage.setItem('sidebarState', 'expanded');
+            } else {
+                localStorage.setItem('sidebarState', 'collapsed');
             }
         });
         
         // Check for saved state
         const sidebarState = localStorage.getItem('sidebarState');
-        if (sidebarState === 'collapsed') {
-            sidebar.classList.add('collapsed');
+        if (sidebarState === 'expanded') {
+            sidebar.classList.add('expanded');
         }
     }
     

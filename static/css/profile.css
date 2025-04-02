@@ -24,6 +24,7 @@
 .profile-name {
     font-size: 2rem;
     margin-bottom: var(--space-sm);
+    color: var(--text-dark);
 }
 
 .profile-location {
@@ -53,8 +54,13 @@
 
 .follow-btn {
     background-color: var(--primary);
-    color: white;
+    color: var(--text-light);
     border: none;
+}
+
+.follow-btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
 }
 
 .message-btn {
@@ -63,14 +69,25 @@
     border: 1px solid var(--primary);
 }
 
-.edit-profile-btn a {
-    color: white;
+.message-btn:hover {
+    background-color: var(--bg-secondary);
+    transform: translateY(-1px);
 }
 
 .edit-profile-btn {
     background-color: var(--secondary);
-    color: white;
+    color: var(--text-light);
     border: none;
+}
+
+.edit-profile-btn:hover {
+    background-color: var(--secondary-dark);
+    transform: translateY(-1px);
+}
+
+.edit-profile-btn a {
+    color: var(--text-light);
+    text-decoration: none;
 }
 
 .bio-data {
@@ -79,11 +96,13 @@
     border-radius: var(--border-radius);
     margin-bottom: var(--space-xl);
     box-shadow: var(--shadow);
+    color: var(--text-dark);
 }
 
 .bio-data div:first-child {
     font-weight: 600;
     margin-bottom: var(--space-sm);
+    color: var(--text-dark);
 }
 
 .skills-container {
@@ -107,6 +126,7 @@
 
 .skill-list {
     list-style: none;
+    color: var(--text-dark);
 }
 
 .skill-list li {
@@ -116,4 +136,16 @@
 
 .skill-list li:last-child {
     border-bottom: none;
+}
+
+@media (max-width: 768px) {
+    .profile-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-actions {
+        margin-top: var(--space-md);
+        justify-content: center;
+    }
 }

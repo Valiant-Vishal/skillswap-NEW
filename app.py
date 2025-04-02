@@ -1,7 +1,6 @@
 from flask import Flask, render_template
 from extensions import db, login_manager, migrate
 from config import Config
-from flask_migrate import Migrate
 from filters import time_ago  # Import the custom filter
 
 def create_app():
@@ -11,7 +10,7 @@ def create_app():
     # Initialize extensions
     db.init_app(app)
     login_manager.init_app(app)
-    migrate = Migrate(app, db)
+    migrate.init_app(app, db)
     
     # Register custom filters
     app.jinja_env.filters['time_ago'] = time_ago  # Register the time_ago filter

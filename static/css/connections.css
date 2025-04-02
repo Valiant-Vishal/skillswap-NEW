@@ -1,0 +1,175 @@
+.connections-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+    margin-top: var(--space-lg);
+}
+
+.connection-section {
+    background-color: var(--bg-primary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: var(--space-md);
+}
+
+.connection-section h3 {
+    margin-top: 0;
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.request-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+}
+
+.request-card {
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.request-user {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.request-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.request-avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.request-user h4 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.request-skills {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.skill-badge {
+    background-color: var(--bg-primary);
+    border-radius: var(--border-radius);
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.9rem;
+}
+
+.skill-knows {
+    border-left: 3px solid var(--success);
+}
+
+.skill-learns {
+    border-left: 3px solid var(--primary);
+}
+
+.request-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-pending {
+    background-color: var(--warning);
+    color: var(--text-dark);
+}
+
+.status-accepted {
+    background-color: var(--success);
+    color: var(--text-light);
+}
+
+.status-rejected {
+    background-color: var(--danger);
+    color: var(--text-light);
+}
+
+.request-actions {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.accept-btn, .reject-btn {
+    flex: 1;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--border-radius);
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.accept-btn {
+    background-color: var(--success);
+    color: var(--text-light);
+}
+
+.reject-btn {
+    background-color: var(--danger);
+    color: var(--text-light);
+}
+
+.accept-btn:hover, .reject-btn:hover {
+    opacity: 0.9;
+}
+
+.message-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.message-link:hover {
+    text-decoration: underline;
+}
+
+.no-requests {
+    text-align: center;
+    padding: var(--space-lg) 0;
+    color: var(--text-muted);
+}
+
+.no-requests p {
+    margin-bottom: var(--space-sm);
+}
+
+.no-requests .btn {
+    margin-top: var(--space-md);
+}
+
+@media (max-width: 768px) {
+    .connections-container {
+        grid-template-columns: 1fr;
+    }
+} 

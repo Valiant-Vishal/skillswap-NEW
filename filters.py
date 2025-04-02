@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from flask import Markup
+from markupsafe import Markup
 
 def time_ago(timestamp):
     """Return a string representing how long ago a timestamp was."""

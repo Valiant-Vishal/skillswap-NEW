@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/connections.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo" id="sidebar-toggle">
+                <img src="{{ url_for('static', filename='assets/favicon.svg') }}" alt="SkillSwap Logo">
+                <span class="site-name">SkillSwap</span>
+            </div>
+        </div>
+        <ul class="menu">
+            <li data-tooltip="Home">
+                <a href="{{ url_for('main.dashboard') }}">
+                    <i class="fa-solid fa-home"></i>
+                    <span class="menu-text">Home</span>
+                </a>
+            </li>
+            <li data-tooltip="Explore">
+                <a href="{{ url_for('main.explore') }}">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span class="menu-text">Explore</span>
+                </a>
+            </li>
+            <li data-tooltip="Messages">
+                <a href="{{ url_for('main.messages') }}">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span class="menu-text">Messages</span>
+                </a>
+            </li>
+            <li class="active" data-tooltip="Connections">
+                <a href="{{ url_for('main.connections') }}">
+                    <i class="fa-solid fa-link"></i>
+                    <span class="menu-text">Connections</span>
+                </a>
+            </li>
+            <li data-tooltip="Settings">
+                <a href="#">
+                    <i class="fa-solid fa-gear"></i>
+                    <span class="menu-text">Settings</span>
+                </a>
+            </li>
+            <li data-tooltip="Logout">
+                <a href="{{ url_for('main.logout') }}">
+                    <i class="fa-solid fa-sign-out-alt"></i>
+                    <span class="menu-text">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <a href="{{ url_for('main.profile') }}">
+                <div class="profile">👤 {{ current_user.name }}</div>
+            </a>
+            <div class="topbar-actions">
+                <button id="theme-toggle" class="theme-toggle-btn">🌘 Dark Mode</button>
+            </div>
+        </header>
+        
+        <section class="content">
+            <div class="welcome-section">
+                <h2>Connection Requests 🔗</h2>
+                <p>Manage your skill swap connection requests</p>
+            </div>
+            
+            <div class="connections-container">
+                <div class="connection-section">
+                    <h3>Received Requests</h3>
+                    
+                    {% if received_requests %}
+                        <div class="request-list">
+                            {% for request in received_requests %}
+                            <div class="request-card">
+                                <div class="request-user">
+                                    {% if request.sender.profile_pic %}
+                                    <img src="{{ url_for('static', filename='uploads/' + request.sender.profile_pic) }}" alt="{{ request.sender.name }}" class="request-avatar">
+                                    {% else %}
+                                    <div class="request-avatar-placeholder">{{ request.sender.name[:1] }}</div>
+                                    {% endif %}
+                                    <h4>{{ request.sender.name }}</h4>
+                                </div>
+                                
+                                <div class="request-skills">
+                                    <div class="skill-badge skill-knows">
+                                        <strong>They know:</strong> {{ request.matched_skill.name }}
+                                    </div>
+                                    <div class="skill-badge skill-learns">
+                                        <strong>They want to learn:</strong> {{ request.requested_skill.name }}
+                                    </div>
+                                </div>
+                                
+                                <div class="request-status">
+                                    <span class="status-badge status-{{ request.status }}">{{ request.status|capitalize }}</span>
+                                </div>
+                                
+                                {% if request.status == 'pending' %}
+                                <div class="request-actions">
+                                    <form action="{{ url_for('main.accept_connection', request_id=request.id) }}" method="POST">
+                                        <button type="submit" class="accept-btn">Accept</button>
+                                    </form>
+                                    <form action="{{ url_for('main.reject_connection', request_id=request.id) }}" method="POST">
+                                        <button type="submit" class="reject-btn">Decline</button>
+                                    </form>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="no-requests">
+                            <p>You don't have any connection requests yet.</p>
+                            <p>Explore skills to find potential matches!</p>
+                            <a href="{{ url_for('main.explore') }}" class="btn btn-primary">Explore Skills</a>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="connection-section">
+                    <h3>Sent Requests</h3>
+                    
+                    {% if sent_requests %}
+                        <div class="request-list">
+                            {% for request in sent_requests %}
+                            <div class="request-card">
+                                <div class="request-user">
+                                    {% if request.receiver.profile_pic %}
+                                    <img src="{{ url_for('static', filename='uploads/' + request.receiver.profile_pic) }}" alt="{{ request.receiver.name }}" class="request-avatar">
+                                    {% else %}
+                                    <div class="request-avatar-placeholder">{{ request.receiver.name[:1] }}</div>
+                                    {% endif %}
+                                    <h4>{{ request.receiver.name }}</h4>
+                                </div>
+                                
+                                <div class="request-skills">
+                                    <div class="skill-badge skill-knows">
+                                        <strong>They know:</strong> {{ request.matched_skill.name }}
+                                    </div>
+                                    <div class="skill-badge skill-learns">
+                                        <strong>They want to learn:</strong> {{ request.requested_skill.name }}
+                                    </div>
+                                </div>
+                                
+                                <div class="request-status">
+                                    <span class="status-badge status-{{ request.status }}">{{ request.status|capitalize }}</span>
+                                    {% if request.status == 'accepted' %}
+                                    <a href="{{ url_for('main.messages') }}" class="message-link">View Messages</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="no-requests">
+                            <p>You haven't sent any connection requests yet.</p>
+                            <p>Find skill matches to connect with others!</p>
+                            <a href="{{ url_for('main.explore') }}" class="btn btn-primary">Find Matches</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+{% endblock %} 
